@@ -67,7 +67,7 @@ async function command(
     default:
       return {
         type: InteractionResponseType.CHANNEL_MESSAGE,
-        data: { content: "Unknown command.", tts: true },
+        data: { content: "Unknown command." },
       };
   }
 }
@@ -76,14 +76,13 @@ function rts(message: string): InteractionResponseCommand {
   return {
     type: InteractionResponseType.CHANNEL_MESSAGE,
     data: {
-      content: `Failed to get documentation for module.`,
+      content: message,
       allowed_mentions: {
         parse: [],
         replied_user: false,
         roles: [],
         users: [],
       },
-      tts: true,
     },
   };
 }
