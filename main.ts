@@ -1,4 +1,4 @@
-import { verify, utils } from "https://deno.land/x/ed25519@1.0.1/mod.ts";
+import { verify } from "https://deno.land/x/ed25519@1.0.1/mod.ts";
 import type { FetchEvent } from "https://raw.githubusercontent.com/lucacasonato/deno-fetchevent/master/mod.ts";
 
 // @ts-expect-error this is correct!
@@ -42,6 +42,7 @@ async function handle(request: Request): Promise<Response> {
       console.log(`Recieved ping request: ${req.id}`);
       return json({ type: 1 });
     case 2:
+      console.log(`Recieved command: ${JSON.stringify(req.data)}`);
       switch (req.data.name) {
         case "ping":
           return json({
