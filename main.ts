@@ -14,7 +14,10 @@ function json(data: unknown, status = 200): Response {
 }
 
 async function handle(request: Request): Promise<Response> {
-  console.log(JSON.stringify(request, undefined, 2));
+  if (request.method !== "POST") {
+    return json("method must be POST", 405);
+  }
+
   const signature = request.headers.get("X-Signature-Ed25519");
   const timestamp = request.headers.get("X-Signature-Timestamp");
   if (!signature || !timestamp) {
@@ -31,9 +34,9 @@ async function handle(request: Request): Promise<Response> {
   }
 
   const req = JSON.parse(body);
-  console.log(JSON.stringify(req, undefined, 2));
   switch (req.type) {
     case 1:
+      console.log(`Recieved ping request: ${req.id}`);
       return json({ type: 1 });
     case 2:
       switch (req.data.name) {
