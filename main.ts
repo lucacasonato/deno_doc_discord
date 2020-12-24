@@ -70,10 +70,7 @@ async function command(
                   type: "rich",
                   url: `${url.toString()}#L${node.location.line}`,
                   title: name,
-                  description: node.jsDoc,
-                  footer: {
-                    text: `View online on [doc.deno.land](https://doc.deno.land/https/${url.host}${url.pathname}#${name}).`,
-                  },
+                  description: `${node.jsDoc}\n\nView more on [doc.deno.land](https://doc.deno.land/https/${url.host}${url.pathname}#${name}).`,
                   provider: {
                     name: "deno doc",
                     url: "https://doc.deno.land",
