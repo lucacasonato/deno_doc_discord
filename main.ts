@@ -24,7 +24,7 @@ async function handle(request: Request): Promise<Response> {
     return json("missing signature or timestamp", 400);
   }
   const body = await request.text();
-  const valid = verify(
+  const valid = await verify(
     signature,
     timestamp + body,
     "e9ad7ee29f62085af14152d3a70c53b6a7f359996ba9acb668d0dd6e246a321e"
