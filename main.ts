@@ -29,6 +29,7 @@ async function handle(request: Request): Promise<Response> {
     timestamp + body,
     "e9ad7ee29f62085af14152d3a70c53b6a7f359996ba9acb668d0dd6e246a321e"
   );
+  console.log(`Signature valid? ${valid} -> ${signature} == ${timestamp + body}`);
   if (!valid) {
     return json("invalid signature", 401);
   }
