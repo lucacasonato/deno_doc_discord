@@ -9,7 +9,23 @@ import {
 async function command(
   data: ApplicationCommandInteractionData
 ): Promise<InteractionResponseCommand> {
-  console.log(`Command: ${data}`);
+  console.log(`Command: ${JSON.stringify(data)}`);
+  switch (data.name) {
+    case "deno":
+      switch (data.options?.[0].name) {
+        case "doc":
+          return {
+            type: InteractionResponseType.CHANNEL_MESSAGE,
+            data: { content: "deno doc!", tts: true },
+          };
+      }
+    default:
+      return {
+        type: InteractionResponseType.CHANNEL_MESSAGE,
+        data: { content: "Unknown command.", tts: true },
+      };
+  }
+
   return { type: InteractionResponseType.ACKNOWLEDGE_WITH_SOURCE };
 }
 
