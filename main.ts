@@ -12,6 +12,7 @@ function json(data: unknown, status = 200): Response {
 }
 
 async function handle(request: Request): Promise<Response> {
+  console.log(JSON.stringify(request, undefined, 2));
   const signature = request.headers.get("X-Signature-Ed25519");
   const timestamp = request.headers.get("X-Signature-Timestamp");
   if (!signature || !timestamp) {
