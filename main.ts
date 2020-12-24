@@ -1,4 +1,4 @@
-import { verify } from "https://deno.land/x/ed25519@1.0.1/mod.ts";
+import { verify, utils } from "https://deno.land/x/ed25519@1.0.1/mod.ts";
 import type { FetchEvent } from "https://raw.githubusercontent.com/lucacasonato/deno-fetchevent/master/mod.ts";
 
 // @ts-expect-error this is correct!
@@ -26,10 +26,12 @@ async function handle(request: Request): Promise<Response> {
   const body = await request.text();
   const valid = await verify(
     signature,
-    timestamp + body,
+    new TextEncoder().encode(`${timestamp}${body}`),
     "e9ad7ee29f62085af14152d3a70c53b6a7f359996ba9acb668d0dd6e246a321e"
   );
-  console.log(`Signature valid? ${valid} -> ${signature} == ${timestamp + body}`);
+  console.log(
+    `Signature valid? ${valid} -> ${signature} == ${timestamp + body}`
+  );
   if (!valid) {
     return json("invalid signature", 401);
   }
