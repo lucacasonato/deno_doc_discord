@@ -32,16 +32,11 @@ export interface ApplicationCommandInteractionData {
   options?: ApplicationCommandInteractionDataOption[];
 }
 
-export type ApplicationCommandInteractionDataOption = {
+export interface ApplicationCommandInteractionDataOption {
   name: string;
-} & (
-  | {
-      value?: Snowflake | string | number | boolean;
-    }
-  | {
-      options: ApplicationCommandInteractionDataOption[];
-    }
-);
+  value?: Snowflake | string | number | boolean;
+  options?: ApplicationCommandInteractionDataOption[];
+}
 
 export interface GuildMember {
   user?: User;
