@@ -2,10 +2,7 @@ import { verify } from "https://deno.land/x/ed25519@1.0.1/mod.ts";
 import type { FetchEvent } from "https://raw.githubusercontent.com/lucacasonato/deno-fetchevent/master/mod.ts";
 
 // @ts-expect-error this is correct!
-addEventListener("fetch", (event: FetchEvent) => {
-  const url = new URL(event.request.url);
-  console.log(url);
-});
+addEventListener("fetch", handle);
 
 function json(data: unknown, status = 200): Response {
   return new Response(JSON.stringify(data), {
