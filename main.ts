@@ -5,6 +5,13 @@ import {
   InteractionResponseCommand,
   InteractionResponseType,
 } from "./discord/mod.ts";
+import {
+  DocNode,
+  expandNamespaces,
+  flattenNamespaces,
+  findNodeByScopedName,
+  nodeName,
+} from "./docs.ts";
 
 async function command(
   data: ApplicationCommandInteractionData
@@ -43,8 +50,14 @@ async function command(
             console.log(err);
             return rts("Failed to generate module documentation.");
           }
-          const docs = await res.json();
-          console.log(JSON.stringify(docs));
+          const data: DocsData = await res.json();
+          console.log(JSON.stringify(data));
+
+          const flattened = flattenNamespaces(expandNamespaces(data.nodes));
+          const node = findNodeByScopedName(flattened, filter, []);
+          if (!node) {
+            return rts("No node matched the filter.");
+          }
 
           return {
             type: InteractionResponseType.CHANNEL_MESSAGE,
@@ -52,8 +65,10 @@ async function command(
               content: "",
               embeds: [
                 {
-                  url: `https://doc.deno.land/https/${url.host}${url.pathname}`,
                   type: "rich",
+                  url: `https://doc.deno.land/https/${url.host}${url.pathname}`,
+                  title: nodeName(node.name, node.scope),
+                  description: node.jsDoc,
                   provider: {
                     name: "deno doc",
                     url: "https://doc.deno.land",
@@ -70,6 +85,11 @@ async function command(
         data: { content: "Unknown command." },
       };
   }
+}
+
+export interface DocsData {
+  timestamp: string;
+  nodes: DocNode[];
 }
 
 function rts(message: string): InteractionResponseCommand {
