@@ -59,16 +59,21 @@ async function command(
             return rts("No node matched the filter.");
           }
 
+          const name = nodeName(node.name, node.scope);
+
           return {
-            type: InteractionResponseType.CHANNEL_MESSAGE,
+            type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
             data: {
               content: "",
               embeds: [
                 {
                   type: "rich",
-                  url: `https://doc.deno.land/https/${url.host}${url.pathname}`,
-                  title: nodeName(node.name, node.scope),
+                  url: `${url.toString()}#L${node.location.line}`,
+                  title: name,
                   description: node.jsDoc,
+                  footer: {
+                    text: `View online on [doc.deno.land](https://doc.deno.land/https/${url.host}${url.pathname}#${name}).`,
+                  },
                   provider: {
                     name: "deno doc",
                     url: "https://doc.deno.land",
@@ -94,7 +99,7 @@ export interface DocsData {
 
 function rts(message: string): InteractionResponseCommand {
   return {
-    type: InteractionResponseType.CHANNEL_MESSAGE,
+    type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
     data: {
       content: message,
       allowed_mentions: {
