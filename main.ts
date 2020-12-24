@@ -45,7 +45,7 @@ async function handle(request: Request): Promise<Response> {
       switch (req.data.name) {
         case "ping":
           return json({
-            type: 4,
+            type: 3,
             data: {
               content: "pong",
             },
