@@ -1,6 +1,6 @@
+import { serve } from "https://deno.land/x/sift@0.1.1/mod.js";
 import {
-  bot,
-  BotHandlers,
+  createBotHandler,
   ApplicationCommandInteractionData,
   InteractionResponseCommand,
   InteractionResponseType,
@@ -12,6 +12,7 @@ import {
   findNodeByScopedName,
   nodeName,
 } from "./docs.ts";
+import { Home } from "./pages/home.tsx";
 
 async function command(
   data: ApplicationCommandInteractionData
@@ -109,6 +110,15 @@ function rts(message: string): InteractionResponseCommand {
   };
 }
 
-bot("e9ad7ee29f62085af14152d3a70c53b6a7f359996ba9acb668d0dd6e246a321e", {
+const publicKey =
+  "e9ad7ee29f62085af14152d3a70c53b6a7f359996ba9acb668d0dd6e246a321e";
+const handlers = {
   command,
+};
+
+const botHandler = createBotHandler(publicKey, handlers);
+
+serve({
+  "/": Home,
+  "/_discord/interactions": botHandler,
 });
