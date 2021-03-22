@@ -110,8 +110,7 @@ function rts(message: string): InteractionResponseCommand {
   };
 }
 
-const publicKey =
-  "e9ad7ee29f62085af14152d3a70c53b6a7f359996ba9acb668d0dd6e246a321e";
+const publicKey = Deno.env.get("DISCORD_PUBLIC_KEY");
 const handlers = {
   command,
 };
